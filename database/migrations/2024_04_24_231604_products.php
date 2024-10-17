@@ -15,11 +15,11 @@ return new class extends Migration
             Schema::create('products', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
-                $table->bigInteger('brand');
+                $table->bigInteger('brand')->nullable();
                 $table->decimal('price', total:10, places:2);
-                $table->bigInteger('stock');
-                $table->bigInteger('state');
-                $table->bigInteger('tipe');
+                $table->bigInteger('stock')->nullable();
+                $table->bigInteger('state')->nullable();
+                $table->bigInteger('tipe')->nullable();
                 $table->timestamps();
             });
         }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('products'); // <- Si existe la tabla 'products' se elimina
     }
 };
