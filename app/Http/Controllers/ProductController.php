@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    public function catalog()
+    {
+        $product = Product::all();
+
+        return Inertia::render('Products/Catalog', ['products' => $product]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -115,10 +122,10 @@ class ProductController extends Controller
             $imageUrl = Storage::url($imagePath); // Obtener la URL publica
 
             // Si se subio una nueva imagen, se elimina la anterior
-        if ($product->image_url) {
-            // Storage::delete(str_replace('/storage', 'public', $product->image_url));
-            Storage::delete($product->image_url);
-        }
+            if ($product->image_url) {
+                // Storage::delete(str_replace('/storage', 'public', $product->image_url));
+                Storage::delete($product->image_url);
+            }
         } else {
             // Si no se cargo una nueva imagen, se mantiene la anterior
             $imageUrl = $product->image_url;
@@ -137,7 +144,7 @@ class ProductController extends Controller
         // Actualizar el producto
         $product->save();
 
-        return redirect()->route('products.index') -> with('actualizado', 'Se actualizó el producto correctamente');
+        return redirect()->route('products.index')->with('actualizado', 'Se actualizó el producto correctamente');
     }
 
     /**
