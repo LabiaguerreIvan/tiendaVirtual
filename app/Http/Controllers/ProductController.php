@@ -4,25 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
     public function catalog()
     {
-        $product = Product::all();
+        $products = Product::query()
+        -> when(request('search'), function($query){
+            $query->where('name', 'like', '%' . request('search') . '%');
+        })->get();
 
-        return Inertia::render('Products/Catalog', ['products' => $product]);
+
+
+        return Inertia::render('Products/Catalog', ['products' => $products]);
     }
-    /**
-     * Display a listing of the resource.
-     */
+
+
     public function index()
     {
-        $product = Product::orderBy('id')->paginate(15); //<- Recupera todos los datos de la BDD
-        return view('products/index', compact('product'));
+        // Recuperar los productos ordenados de manera ascendente por id y con paginación
+        $product = Product::orderBy('id', 'asc')->paginate(10);
+    
+        // Transformación para agregar 'short_description' a cada producto
+        $product->getCollection()->transform(function ($product) {
+            $product->short_description = Str::limit($product->description, 50, '...');
+            return $product;
+        });
+    
+        // Retorna la vista con los productos paginados y transformados
+        return view('products.index', compact('product'));
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
@@ -43,18 +60,18 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', //Maximo 2MB
             'description' => 'required|string|max:1000',
-            // 'brand' => 'required',
             'price' => 'required|decimal:2',
+            // 'brand' => 'required',
             // 'stock' => 'required',
             // 'state' => 'required',
-            // 'type' => 'required',
+            // 'type' => 'required'
         ]);
 
         //Guardar la imagen en el servidor
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('public/products', $imageName); //Guardar en storage/app/public/
+            $imagePath = $image->storeAs('public/products', $imageName); //Guardar en storage/app/public/products
             $imageUrl = Storage::url($imagePath); // Obtener la URL publica
         }
 
@@ -64,8 +81,8 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->image_url = $imageUrl ?? null; // Si no hay imagen, se asigna null
         $product->description = $request->description;
-        // $product->brand = $request->brand;
         $product->price = $request->price;
+        // $product->brand = $request->brand;
         // $product->stock = $request->stock;
         // $product->state = $request->state;
         // $product->type = $request->type;
@@ -101,13 +118,13 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif', //Maximo 2MB
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', //Maximo 2MB
             'description' => 'required|string|max:1000',
-            // 'brand' => 'required',
             'price' => 'required|decimal:2',
+            // 'brand' => 'required',
             // 'stock' => 'required',
             // 'state' => 'required',
-            // 'type' => 'required',
+            // 'type' => 'required'
         ]);
 
         // Requiperar el producto por el ID que recibimos
@@ -118,7 +135,7 @@ class ProductController extends Controller
             //Guardar la imagen en el servidor
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('public/products', $imageName); //Guardar en storage/app/public/
+            $imagePath = $image->storeAs('public/products', $imageName); //Guardar en storage/app/public/products
             $imageUrl = Storage::url($imagePath); // Obtener la URL publica
 
             // Si se subio una nueva imagen, se elimina la anterior
@@ -135,8 +152,8 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->image_url = $imageUrl; // Mantener la URL de la imagen anterior si no se subio una nueva
         $product->description = $request->description;
-        // $product->brand = $request->brand;
         $product->price = $request->price;
+        // $product->brand = $request->brand;
         // $product->stock = $request->stock;
         // $product->state = $request->state;
         // $product->type = $request->type;
@@ -154,6 +171,6 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
-        return redirect()->route('products.index');
+        return redirect()->route('products.index')->with('borrado','Se borro el producto exitosamente');
     }
 }

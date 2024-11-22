@@ -25,9 +25,9 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                                <div className="flex shrink-0 items-center">
+                                
                                     <img src="storage/tienda.png" className="h-8" alt="Catalogo" />
-                                </div>
+                                
                             </div>
 
 
@@ -36,7 +36,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('products.catalog')}
                                     active={route().current('products.catalog')}
                                 >
-                                    Dashboard
+                                    Catálogo
                                 </NavLink>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             // Si el usuario esta autenticado, muestra el link al perfil
                             (<div className='hidden space-x-8 sm:-my-px sm:ms-10 sm:flex'>
                                 <NavLink onClick={productsBlade} href={route('products.index')} active={route().current('products.index')}>
-                                    Admin
+                                    Administración
                                 </NavLink>
                             </div>) :
                             // Si el usuario no esta autenticado, muestra el link para logearse
@@ -65,9 +65,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto"
                                             >
-                                                {user ? user.name : 'menu'}
+                                                {user ? user.name : 'Menú de Usuario'}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -90,13 +90,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                             // Si el usuario está autenticado, muestra el link al perfil
                                             (<Dropdown.Link
                                                 href={route('profile.edit')}>
-                                                Profile
+                                                Perfil
                                             </Dropdown.Link>) :
 
                                             // Si el usuario no esta autenticado, muestra el link para loguearse 
                                             (<Dropdown.Link
                                                 href={route('login')}>
-                                                Logearse
+                                                Iniciar Sesión
                                             </Dropdown.Link>)
                                         }
 
@@ -197,13 +197,13 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
+                                Iniciar Sesión
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
                                 as="button">
-                                Log Out
+                                Cerrar Sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>

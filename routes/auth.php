@@ -17,9 +17,11 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
+    // Recupera el formulario para logearse
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
+    // Manda el formulario para validar
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])

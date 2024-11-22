@@ -7,7 +7,7 @@
             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8">
 
                 <x-input-field name="name" label="Nombre" type="text" value="{{ old('name', $product->name) }}"
-                    placeholder="Name for Product" />
+                    placeholder="Nombre del producto" />
 
                 <x-input-field name="image" label="Imagen" type="file"
                     value="{{ old('image', $product->image_url) }}" placeholder="Ingrese una imagen"
@@ -16,9 +16,9 @@
                 <x-input-field name="price" label="Precio" type="text" value="{{ old('price', $product->price) }}"
                     placeholder="Ejemplo: 1000" />
 
-                <x-text-area name="description" label="Descripcion"
+                <x-text-area name="description" label="Descripción"
                     value="{{ old('description', $product->description) }}"
-                    placeholder="Escriba aqui una descripcion para el producto" />
+                    placeholder="Escriba aqui una descripción para el producto" />
 
 
             </div>

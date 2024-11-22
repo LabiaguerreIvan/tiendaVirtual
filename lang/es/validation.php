@@ -38,7 +38,7 @@ return [
     'date_equals'          => 'El campo :attribute debe ser una fecha igual a :date.',
     'date_format'          => 'El campo :attribute no corresponde con el formato de fecha :format.',
 
-    'decimal'               => 'The :attribute field must have :decimal decimal places.',
+    'decimal'               => 'El campo :attribute debe incluir :decimal decimales.',
     'declined'              => 'The :attribute field must be declined.',
     'declined_if'           => 'The :attribute field must be declined when :other is :value.',
     'different'            => 'Los campos :attribute y :other deben ser diferentes.',
@@ -283,6 +283,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'nombre',
+        'price' => 'precio',
+        'description' => 'descripción',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña'
+    ],
 
 ];
